@@ -1,0 +1,19 @@
+services:
+  postgres_db:
+    image: postgres:alpine3.24
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: coinsdb
+    ports:
+      - "5432:5432"
+  etl:
+    build: ./ ## this command asks compose to build the mage constructed right here in the folder
+    depends_on:
+      - postgres_db
+    environment:
+      DB_HOST: postgres_db
+      DB_NAME: coinsdb
+      DB_USER: postgres
+      DB_PASSWORD: root
